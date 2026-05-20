@@ -1,0 +1,130 @@
+﻿<Window x:Class="CraftifyWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Craftify - Minecraft Recipes" Height="650" Width="460"
+        MinWidth="380" MinHeight="500"
+        Background="#1a1a24"
+        WindowStartupLocation="CenterScreen"
+        TextOptions.TextRenderingMode="ClearType">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="TabButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#9090a8"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="4,6">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                <ContentPresenter HorizontalAlignment="Center"/>
+                                <TextBlock Text="{TemplateBinding Content}" FontSize="10" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="CatButton">
+            <Setter Property="Background" Value="#242436"/>
+            <Setter Property="Foreground" Value="#9090a8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="12,4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="12" Padding="{TemplateBinding Padding}" Margin="0,0,4,0">
+                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Detail Overlay -->
+        <Border x:Name="DetailOverlay" Grid.RowSpan="3" Background="#1a1a24" Visibility="Collapsed" Panel.ZIndex="100">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#2a2a3a" BorderThickness="0,0,0,1" Padding="12,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="&#8592;" Foreground="#e8e8f0" Background="Transparent" BorderThickness="0" FontSize="22" Cursor="Hand" Click="Back_Click"/>
+                        <TextBlock Grid.Column="1" x:Name="DetailTitle" Foreground="#e8e8f0" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="8,0" TextTrimming="CharacterEllipsis"/>
+                        <Button Grid.Column="2" x:Name="DetailHeart" Content="&#9825;" Foreground="#9090a8" Background="Transparent" BorderThickness="0" FontSize="24" Cursor="Hand" Click="ToggleFav_Click"/>
+                    </Grid>
+                </Border>
+                <ScrollViewer Grid.Row="1" x:Name="DetailScroll" Padding="16">
+                    <StackPanel x:Name="DetailPanel" Margin="0,0,0,20"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Tab Content -->
+        <ContentControl Grid.Row="1" x:Name="TabContent"/>
+
+        <!-- Tab Bar -->
+        <Border Grid.Row="2" Background="#1a1a24" BorderBrush="#2a2a3a" BorderThickness="0,1,0,0" Padding="0,4,0,4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="TabRecipes" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="recipes">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Border Width="22" Height="22" BorderBrush="#9090a8" BorderThickness="1.5" CornerRadius="2">
+                            <Grid>
+                                <Rectangle Width="7" Height="7" Fill="#9090a8" Margin="1,1,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Rectangle Width="7" Height="7" Fill="#9090a8" Margin="0,1,1,0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                                <Rectangle Width="7" Height="7" Fill="#9090a8" Margin="1,0,0,1" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                                <Rectangle Width="7" Height="7" Fill="#9090a8" Margin="0,0,1,1" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="Recipes" FontSize="9"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1" x:Name="TabFavorites" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="favorites">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <TextBlock Text="&#9825;" FontSize="20" FontFamily="Segoe UI Symbol"/>
+                        <TextBlock Text="Favorites" FontSize="9"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" x:Name="TabSearch" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="search">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <Border Width="22" Height="22" BorderBrush="#9090a8" BorderThickness="1.5" CornerRadius="11">
+                            <Ellipse Width="8" Height="8" Fill="#9090a8" Margin="2"/>
+                        </Border>
+                        <TextBlock Text="Search" FontSize="9"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="3" x:Name="TabMore" Style="{StaticResource TabButton}" Click="Tab_Click" Tag="more">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                            <Ellipse Width="5" Height="5" Fill="#9090a8" Margin="1"/>
+                            <Ellipse Width="5" Height="5" Fill="#9090a8" Margin="1"/>
+                            <Ellipse Width="5" Height="5" Fill="#9090a8" Margin="1"/>
+                        </StackPanel>
+                        <TextBlock Text="More" FontSize="9"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
